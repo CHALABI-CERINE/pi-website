@@ -227,35 +227,6 @@ export const Hero = () => {
             </motion.button>
           </motion.div>
 
-          {/* Mini Stats */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            className="mt-10 flex gap-8 md:gap-12"
-          >
-            {[
-              { value: '250+', label: 'Membres' },
-              { value: '45+', label: 'Events' },
-              { value: '20+', label: 'Projets' },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                className="text-center"
-                whileHover={{ y: -3 }}
-              >
-                <div 
-                  className="text-2xl md:text-3xl font-black text-orange-500"
-                  style={{ fontFamily:  '"Space Grotesk", sans-serif' }}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-[10px] uppercase tracking-widest text-primary/40 font-semibold">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </motion.div>
 
