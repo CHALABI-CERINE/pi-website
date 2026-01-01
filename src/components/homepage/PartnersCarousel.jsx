@@ -1,55 +1,62 @@
-import { useState, useEffect } from 'react';
-import { useLanguage } from '../../hooks/useLanguage';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
-import { useGoogleSheets } from '../../hooks/useGoogleSheets';
-import { getPartners } from '../../services/googleSheetsAPI';
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useInView } from "framer-motion";
+
+const partners = [
+  { name: "TechCorp", logo: "TC" },
+  { name: "InnovateLab", logo: "IL" },
+  { name: "GreenFuture", logo: "GF" },
+  { name: "EduTech", logo: "ET" },
+  { name: "StartupHub", logo: "SH" },
+  { name: "DigitalWave", logo: "DW" },
+  { name: "CloudNet", logo: "CN" },
+  { name: "DataFlow", logo: "DF" },
+];
 
 export const PartnersCarousel = () => {
-  const { t } = useLanguage();
-  const { ref, inView } = useScrollAnimation();
-  const { data: partnersData } = useGoogleSheets(getPartners);
-
-  const partners = partnersData. map(row => ({
-    id: row[0],
-    name: row[1],
-    logo: row[2],
-    website: row[3],
-  })) || [];
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const duplicatedPartners = [...partners, ...partners, ...partners]; // Triplé pour assurer la continuité
 
   return (
-    <section ref={ref} className="py-16 md:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl md:text-5xl font-bold text-dark text-center mb-12">
-          {t.partnersTitle}
-        </h2>
+    <section className="py-24 bg-secondary overflow-hidden border-y border-border">
+      <div className="container mb-12" ref={ref}>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          className="text-center"
+        >
+          <span className="inline-block px-4 py-2 rounded-full bg-primary/10 text-primary font-poppins text-xs font-bold uppercase tracking-widest mb-4">
+            Partners
+          </span>
+          <h2 className="font-display text-5xl md:text-7xl text-foreground uppercase">
+            Ils nous font <span className="text-primary">confiance</span>
+          </h2>
+        </motion.div>
+      </div>
 
-        {/* Carousel */}
-        <div className="bg-gray-50 rounded-2xl p-8">
-          <div className="flex overflow-x-auto gap-8 pb-4">
-            {partners. length > 0 ? (
-              partners.map((partner, index) => (
-                <motion.a
-                  key={partner.id}
-                  href={partner. website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0 }}
-                  animate={inView ? { opacity: 1 } : {}}
-                  whileHover={{ scale: 1.05 }}
-                  className="flex-shrink-0 h-24 flex items-center justify-center"
-                >
-                  <img
-                    src={partner.logo}
-                    alt={partner. name}
-                    className="h-20 object-contain hover:opacity-80 transition-opacity"
-                  />
-                </motion. a>
-              ))
-            ) : (
-              <p className="text-gray-500">No partners available</p>
-            )}
-          </div>
+      <div className="relative mt-16">
+        {/* Gradients de fondu sur les côtés */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-secondary to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-secondary to-transparent z-10" />
+        
+        {/* Utilisation de l'animation marquee de ton tailwind.config */}
+        <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
+          {duplicatedPartners.map((partner, index) => (
+            <div
+              key={`${partner.name}-${index}`}
+              className="flex-shrink-0 mx-4 w-48 h-28 bg-card border border-border rounded-xl flex items-center justify-center group hover:border-primary/50 transition-all duration-300"
+            >
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center font-display text-2xl text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
+                  {partner.logo}
+                </div>
+                <span className="font-poppins text-[10px] font-bold uppercase tracking-tighter text-muted-foreground group-hover:text-foreground">
+                  {partner.name}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

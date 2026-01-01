@@ -1,96 +1,118 @@
-import { useState, useMemo } from 'react';
-import { useLanguage } from '../../hooks/useLanguage';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollAnimation } from '../../hooks/useScrollAnimation';
-import { useGoogleSheets } from '../../hooks/useGoogleSheets';
-import { getQABoard } from '../../services/googleSheetsAPI';
-import { motion } from 'framer-motion';
+
+const faqs = [
+  {
+    question: "Wech ydir club?",
+    answer: "HEUM."
+  },
+  {
+    question: "Les départements li kaynin?",
+    answer: "On est structurés en plusieurs pôles : IT, Design, CC, RE ,RH. Chaque pôle travaille en synergie sur nos projets."
+  },
+  {
+    question: "Est-ce que lzm etudiant men USTHB bach ykoun membre?",
+    answer: "Principalement oui, car nos activités se déroulent au campus. Cependant, nous restons ouverts aux profils exceptionnels et passionnés venant d'autres écoles pour certaines collaborations."
+  },
+  {
+    question: "Kifach n9der nweli membre?",
+    answer: "Le recrutement se fait généralement au début de chaque semestre. Il suffit de remplir le formulaire en ligne, suivi d'un entretien technique ou de motivation selon le département choisi."
+  },
+  {
+    question: "Type d’evenements li yndirouhom?",
+    answer: "KOLCH"
+  },
+  {
+    question: "Wech ykheli PI spéciale 3la les autres clubs?",
+    answer: "PI ."
+  }
+];
+
+const FAQItem = ({ faq, isOpen, toggle }) => {
+  return (
+    <motion.div 
+      className={`border-b border-gray-100 transition-colors duration-500 ${isOpen ? 'bg-gray-50/50' : 'bg-white'}`}
+    >
+      <button 
+        onClick={toggle}
+        className="w-full py-8 px-4 flex justify-between items-center text-left group"
+      >
+        <span className={`text-lg md:text-xl font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-accent' : 'text-primary'}`}>
+          {faq.question}
+        </span>
+        
+        {/* Le bouton + interactif */}
+        <div className="relative w-6 h-6 flex items-center justify-center">
+          <motion.div 
+            animate={{ rotate: isOpen ? 45 : 0 }}
+            className={`absolute w-full h-[2px] ${isOpen ? 'bg-accent' : 'bg-primary'}`}
+          />
+          <motion.div 
+            animate={{ rotate: isOpen ? 135 : 90 }}
+            className={`absolute w-full h-[2px] ${isOpen ? 'bg-accent' : 'bg-primary'}`}
+          />
+        </div>
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+            className="overflow-hidden"
+          >
+            <div className="pb-8 px-4 text-gray-500 font-light leading-relaxed max-w-3xl">
+              {faq.answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
 
 export const FAQ = () => {
-  const { t } = useLanguage();
-  const { ref, inView } = useScrollAnimation();
-  const { data: qaData } = useGoogleSheets(getQABoard);
-  const [expanded, setExpanded] = useState(null);
-  const [displayCount, setDisplayCount] = useState(5);
-
-  const faqs = useMemo(() => {
-    return qaData
-      .filter(row => row[3] === 'answered')
-      .map(row => ({
-        id: row[0],
-        question: row[1],
-        answer: row[5],
-        category: row[2],
-      }));
-  }, [qaData]);
-
-  const displayedFaqs = faqs.slice(0, displayCount);
+  const [containerRef, isVisible] = useScrollAnimation(0.2);
+  const [openIndex, setOpenIndex] = useState(null);
 
   return (
-    <section ref={ref} className="py-16 md:py-24 bg-white">
-      <div className="max-w-4xl mx-auto px-4 sm: px-6 lg:  px-8">
-        <h2 className="text-4xl md:text-5xl font-bold text-dark text-center mb-12">
-          {t. faqTitle}
-        </h2>
+    <section ref={containerRef} className="py-32 bg-white">
+      <div className="container mx-auto px-6 lg:px-12">
+        
+        {/* Header Style Studio */}
+        <div className="mb-20">
+          <motion.h2 
+            initial={{ opacity: 0, y: 10 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            className="text-[10px] uppercase tracking-[0.5em] font-black text-gray-300 mb-4"
+          >
+            Questions / Answers
+          </motion.h2>
+          <motion.h3 
+            initial={{ opacity: 0, y: 10 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-6xl font-black text-primary tracking-tighter"
+          >
+            FREQUENTLY ASKED QUESTIONSSSSSSSSN?
+          </motion.h3>
+        </div>
 
-        {/* FAQ Items */}
-        <div className="space-y-4">
-          {displayedFaqs.map((faq, index) => (
-            <motion. div
-              key={faq. id}
-              initial={{ opacity:  0, y: 10 }}
-              animate={inView ?  { opacity: 1, y:  0 } :  {}}
-              transition={{ delay:  index * 0.05 }}
-              className="border-2 border-gray-200 rounded-lg overflow-hidden"
-            >
-              <button
-                onClick={() => setExpanded(expanded === faq.id ? null :   faq.id)}
-                className="w-full p-6 flex justify-between items-center hover:bg-gray-50 transition-colors"
-              >
-                <span className="font-semibold text-dark text-left">{faq.question}</span>
-                <motion.div
-                  animate={{ rotate: expanded === faq.id ?  180 : 0 }}
-                  className="text-primary flex-shrink-0"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                    />
-                  </svg>
-                </motion.div>
-              </button>
-
-              {expanded === faq.id && (
-                <motion.div
-                  initial={{ height: 0 }}
-                  animate={{ height:   'auto' }}
-                  className="bg-gray-50 p-6 text-gray-700 border-t-2 border-gray-200"
-                >
-                  {faq.answer}
-                </motion.div>
-              )}
-            </motion.div>
+        {/* Liste des boîtes */}
+        <div className="max-w-4xl border-t border-gray-100">
+          {faqs.map((faq, index) => (
+            <FAQItem 
+              key={index}
+              faq={faq}
+              isOpen={openIndex === index}
+              toggle={() => setOpenIndex(openIndex === index ? null : index)}
+            />
           ))}
         </div>
 
-        {/* Load More */}
-        {displayCount < faqs. length && (
-          <div className="flex justify-center mt-12">
-            <button
-              onClick={() => setDisplayCount(prev => prev + 5)}
-              className="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:shadow-lg transition-all"
-            >
-              {t. faqLoadMore}
-            </button>
-          </div>
-        )}
       </div>
     </section>
   );

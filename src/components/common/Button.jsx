@@ -1,31 +1,23 @@
-export const Button = ({
-  children,
-  variant = 'primary',
-  size = 'md',
-  className = '',
-  ... props
-}) => {
-  const baseStyles = 'font-semibold rounded-lg transition-all duration-300 flex items-center justify-center gap-2';
+import React from 'react';
+import { motion } from 'framer-motion';
 
+export const Button = ({ children, onClick, variant = 'primary', className = '' }) => {
+  const baseStyles = "font-text text-[11px] font-black uppercase tracking-[0.25em] px-10 py-5 transition-all duration-500 rounded-sm";
+  
   const variants = {
-    primary: 'bg-primary text-white hover:shadow-lg hover:scale-105',
-    secondary: 'bg-secondary text-white hover:shadow-lg hover:scale-105',
-    outline: 'border-2 border-primary text-primary hover:bg-primary hover:text-white',
-    green: 'bg-green-500 text-white hover:shadow-lg hover:scale-105',
-  };
-
-  const sizes = {
-    sm: 'px-4 py-2 text-sm',
-    md:  'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+    primary: "bg-accent text-white hover:bg-primary hover:shadow-xl hover:shadow-orange-500/20",
+    outline: "border border-primary text-primary hover:bg-primary hover:text-white",
+    ghost: "text-primary hover:text-accent p-0 tracking-[0.3em]"
   };
 
   return (
-    <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      {...props}
+    <motion.button
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      className={`${baseStyles} ${variants[variant]} ${className}`}
     >
       {children}
-    </button>
+    </motion.button>
   );
 };

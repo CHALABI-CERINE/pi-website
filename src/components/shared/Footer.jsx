@@ -1,101 +1,96 @@
-import { Link } from 'react-router-dom';
-import { useLanguage } from '../../hooks/useLanguage';
-import { useSiteContent } from '../../hooks/useSiteContent';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaDiscord } from 'react-icons/fa';
+import React from 'react';
+import { Instagram, Linkedin, MessageSquare, Music2, Phone, Mail, MapPin, Heart } from 'lucide-react';
+import { Button } from '../ui/button';
 
 export const Footer = () => {
-  const { t } = useLanguage();
-  const { siteContent } = useSiteContent();
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-dark text-white py-12 md:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md: grid-cols-3 gap-8 mb-8">
-          {/* About Column */}
-          <div>
-            <h3 className="text-lg font-bold mb-4 text-primary">{siteContent?. club_name || 'Organization'}</h3>
-            <p className="text-gray-300 text-sm leading-relaxed">
-              {t. footerAbout}
-            </p>
-            <p className="text-gray-400 text-xs mt-4">Founded in {siteContent?.founder_year}</p>
-          </div>
+    <footer className="bg-foreground text-background pt-20 pb-10 border-t border-white/5">
+      <div className="container mx-auto px-6">
+        {/* Layout Principal: 3 colonnes sur Desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-16">
+          
+         {/* Column 1 - Club Info */}
+<div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+  <img 
+    src="https://lh3.googleusercontent.com/d/1DQCfO0RmKNbSTb5toyzH4hDwtulNkD-o" 
+    alt="Project Initiative Logo" 
+    className="h-20 w-auto mb-6 object-contain"
+  />
+  <h3 className="font-display text-4xl uppercase tracking-tight mb-2">Project Initiative</h3>
+  <p className="font-poppins text-xs font-bold text-primary uppercase tracking-[0.2em] mb-4">
+    Driving innovation at USTHB
+  </p>
+  <p className="font-montserrat text-xs text-background/40">
+    Founded year: 2016
+  </p>
+</div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-lg font-bold mb-4 text-primary">{t.footerQuickLinks}</h4>
-            <ul className="space-y-2">
-              <li><Link to="/about" className="text-gray-300 hover:text-primary transition-colors">{t.navAbout}</Link></li>
-              <li><Link to="/events" className="text-gray-300 hover:text-primary transition-colors">{t.navEvents}</Link></li>
-              <li><Link to="/projects" className="text-gray-300 hover:text-primary transition-colors">{t.navProjects}</Link></li>
-              <li><Link to="/contact" className="text-gray-300 hover:text-primary transition-colors">{t.navContact}</Link></li>
+          {/* Column 2 - Quick Links */}
+          <div className="flex flex-col items-center lg:items-start">
+            <h4 className="font-poppins text-xs font-bold uppercase tracking-[0.3em] mb-8 text-primary">Navigation</h4>
+            <ul className="grid grid-cols-2 gap-x-12 gap-y-4 font-poppins text-[10px] font-bold uppercase tracking-widest text-background/60">
+              <li><a href="#hero" className="hover:text-primary transition-colors">Home</a></li>
+              <li><a href="#about" className="hover:text-primary transition-colors">About</a></li>
+              <li><a href="#portfolio" className="hover:text-primary transition-colors">Projects</a></li>
+              <li><a href="#portfolio" className="hover:text-primary transition-colors">Events</a></li>
+              <li><a href="/alumni" className="hover:text-primary transition-colors">Alumni</a></li>
+              <li><a href="#contact" className="hover:text-primary transition-colors">Contact</a></li>
             </ul>
           </div>
 
-          {/* Contact & Social */}
-          <div>
-            <h4 className="text-lg font-bold mb-4 text-primary">{t. footerFollowUs}</h4>
-            <div className="flex gap-4 mb-6">
-              {siteContent?.discord_url && (
-                <a 
-                  href={siteContent. discord_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-gray-300 hover:text-primary transition-colors text-2xl"
-                  title="Discord"
-                >
-                  <FaDiscord />
-                </a>
-              )}
-              {siteContent?.instagram_url && (
-                <a 
-                  href={siteContent.instagram_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-gray-300 hover:text-primary transition-colors text-2xl"
-                  title="Instagram"
-                >
-                  <FaInstagram />
-                </a>
-              )}
-              {siteContent?.tiktok_url && (
-                <a 
-                  href={siteContent.tiktok_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-gray-300 hover:text-primary transition-colors text-2xl"
-                  title="TikTok"
-                >
-                  <FaTwitter /> {/* Or use a TikTok icon if available */}
-                </a>
-              )}
-              {siteContent?.linkedin_url && (
-                <a 
-                  href={siteContent.linkedin_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-gray-300 hover:text-primary transition-colors text-2xl"
-                  title="LinkedIn"
-                >
-                  <FaLinkedin />
-                </a>
-              )}
+          {/* Column 3 - Contact & Follow */}
+          <div className="flex flex-col items-center lg:items-start">
+            <h4 className="font-poppins text-xs font-bold uppercase tracking-[0.3em] mb-8 text-primary">Connect</h4>
+            <div className="space-y-4 w-full">
+              <a href="tel:+213123456789" className="flex items-center gap-4 group justify-center lg:justify-start">
+                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-primary/20 transition-colors">
+                  <Phone size={14} className="text-primary" />
+                </div>
+                <span className="font-montserrat text-sm text-background/70 group-hover:text-white transition-colors">+213 (0) 5XX XX XX XX</span>
+              </a>
+              <a href="mailto:contact@pi-usthb.com" className="flex items-center gap-4 group justify-center lg:justify-start">
+                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-primary/20 transition-colors">
+                  <Mail size={14} className="text-primary" />
+                </div>
+                <span className="font-montserrat text-sm text-background/70 group-hover:text-white transition-colors">contact@pi-usthb.com</span>
+              </a>
+              <a href="https://maps.app.goo.gl/usthb" target="_blank" className="flex items-center gap-4 group justify-center lg:justify-start">
+                <div className="p-2 bg-white/5 rounded-lg group-hover:bg-primary/20 transition-colors">
+                  <MapPin size={14} className="text-primary" />
+                </div>
+                <span className="font-montserrat text-sm text-background/70 group-hover:text-white transition-colors">USTHB, Bab Ezzouar, Algiers</span>
+              </a>
             </div>
-            <p className="text-gray-400 text-sm">
-              📧 {siteContent?.club_email}<br/>
-              📞 {siteContent?.club_phone}
-            </p>
+
+            {/* Social Links */}
+            <div className="flex gap-4 mt-8">
+              <a href="#" className="w-10 h-10 flex items-center justify-center border border-white/10 rounded-full hover:bg-primary hover:text-foreground transition-all"><MessageSquare size={16} /></a>
+              <a href="#" className="w-10 h-10 flex items-center justify-center border border-white/10 rounded-full hover:bg-primary hover:text-foreground transition-all"><Instagram size={16} /></a>
+              <a href="#" className="w-10 h-10 flex items-center justify-center border border-white/10 rounded-full hover:bg-primary hover:text-foreground transition-all"><Music2 size={16} /></a>
+              <a href="#" className="w-10 h-10 flex items-center justify-center border border-white/10 rounded-full hover:bg-primary hover:text-foreground transition-all"><Linkedin size={16} /></a>
+            </div>
           </div>
         </div>
 
-        <hr className="border-gray-700 mb-8" />
-
-        {/* Bottom Footer */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
-          <p>&copy; {currentYear} {siteContent?.club_name}. {t.footerAllRights}</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-primary transition-colors">{t.footerPrivacy}</a>
-            <a href="#" className="hover:text-primary transition-colors">{t.footerTerms}</a>
+        {/* Bottom of Footer */}
+        <div className="pt-8 border-t border-white/5 flex flex-col items-center gap-6">
+          <div className="flex flex-wrap justify-center gap-6 font-poppins text-[9px] uppercase tracking-widest text-background/30">
+            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+            <span>|</span>
+            <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <span>|</span>
+            <a href="#" className="hover:text-white transition-colors">Code of Conduct</a>
+          </div>
+          
+          <div className="text-center space-y-2">
+            <p className="font-poppins text-[9px] uppercase tracking-[0.3em] text-background/20">
+              © {currentYear} Project Initiative. All rights reserved.
+            </p>
+            <p className="font-poppins text-[10px] uppercase tracking-widest text-background/60 flex items-center justify-center gap-2">
+              Made with <Heart size={12} className="text-primary fill-primary" /> by Project Initiative Team
+            </p>
           </div>
         </div>
       </div>

@@ -60,3 +60,19 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Add this to your index.css */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll {
+  display: flex;
+  width: calc(250px * 20); /* Adjust based on number of logos */
+  animation: scroll 40s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}

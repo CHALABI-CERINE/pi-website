@@ -1,129 +1,89 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useLanguage } from '../../hooks/useLanguage';
-import { LanguageToggle } from './LanguageToggle';
-import { motion } from 'framer-motion';
-
+import React, { useState, useEffect } from "react";
+import { Button } from "../ui/button";
+import { cn } from "../../lib/utils";
+import { Menu, X } from "lucide-react"; 
 export const Navigation = () => {
-  const { t } = useLanguage();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Détecte le scroll pour changer le style de la barre
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navLinks = [
-    { name: t.  navHome, href: '/' },
-    { name: t. navAbout, href: '/about' },
-    { name: t.navEvents, href: '/events' },
-    { name: t.navProjects, href: '/projects' },
-    { name: t.navAlumni, href: '/alumni' },
-    { name: t.navContact, href: '/contact' },
+    { name: "Home", href: "#hero" },
+    { name: "About", href: "#about" },
+    { name: "Projects", href: "#projects" },
+    { name: "Events", href: "#portfolio" }, // Portfolio gère les events
+    { name: "Alumni", href: "/alumni" },
   ];
 
   return (
     <nav
-      className={`transition-all duration-300 ${
-        isSticky
-          ? 'fixed top-0 left-0 right-0 bg-white shadow-lg z-50'
-          : 'relative bg-white'
-      } w-full`}
+      className={cn(
+        "fixed top-0 w-full z-[100] transition-all duration-500 px-6 py-5",
+        isScrolled 
+          ? "bg-background/80 backdrop-blur-xl border-b border-border py-4" 
+          : "bg-transparent"
+      )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg: px-8">
-        <div className="flex justify-between items-center h-16 md:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">Org</span>
-            </div>
-            <span className="text-xl font-bold text-dark hidden sm:block">Organization</span>
-          </Link>
+      <div className="container mx-auto flex items-center justify-between">
+        
+        {/* LOGO : Utilise ta font-display */}
+        <a href="/" className="font-display text-3xl md:text-4xl tracking-tighter hover:text-primary transition-colors">
+          PROJECT<span className="text-primary">INITIATIVE</span>
+        </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className="text-dark hover:text-primary transition-colors font-medium"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Language Toggle + Mobile Menu */}
-          <div className="flex items-center gap-4">
-            <LanguageToggle />
-
-            {/* Mobile Menu Button - Using SVG */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-dark text-2xl p-1"
+        {/* LINKS DESKTOP */}
+        <div className="hidden md:flex items-center gap-10">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className="font-poppins text-[10px] font-bold uppercase tracking-[0.25em] text-foreground/70 hover:text-primary transition-all relative group"
             >
-              {isOpen ? (
-                // X Icon
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                // Menu Icon
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
+              {link.name}
+              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full" />
+            </a>
+          ))}
         </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height:  'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-200 py-4"
+        {/* CTA & MOBILE TOGGLE */}
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="sm" className="hidden sm:flex border-primary/20 hover:border-primary">
+            Join Us
+          </Button>
+          
+          <button 
+            className="md:hidden p-2 text-foreground"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            <div className="flex flex-col gap-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link. href}
-                  to={link.href}
-                  className="px-4 py-2 text-dark hover:bg-gray-100 rounded transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </motion.div>
-        )}
+            {mobileMenuOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+      </div>
+
+      {/* MOBILE MENU PANEL */}
+      <div className={cn(
+        "fixed inset-0 bg-background z-[90] flex flex-col items-center justify-center gap-8 transition-transform duration-500 md:hidden",
+        mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
+      )}>
+        {navLinks.map((link) => (
+          <a
+            key={link.name}
+            href={link.href}
+            onClick={() => setMobileMenuOpen(false)}
+            className="font-display text-5xl uppercase hover:text-primary transition-colors"
+          >
+            {link.name}
+          </a>
+        ))}
+        <Button className="mt-8" onClick={() => setMobileMenuOpen(false)}>
+          Contact Now
+        </Button>
       </div>
     </nav>
   );

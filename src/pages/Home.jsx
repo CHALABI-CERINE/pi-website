@@ -1,25 +1,26 @@
-import { Navigation } from '../components/shared/Navigation';
-import { Footer } from '../components/shared/Footer';
+import React from 'react';
 import { Hero } from '../components/homepage/Hero';
 import { Stats } from '../components/homepage/Stats';
-import { AboutSnippet } from '../components/homepage/AboutSnippet';
 import { Portfolio } from '../components/homepage/Portfolio';
+import { AboutSnippet } from '../components/homepage/AboutSnippet';
 import { PartnersCarousel } from '../components/homepage/PartnersCarousel';
 import { Testimonials } from '../components/homepage/Testimonials';
 import { FAQ } from '../components/homepage/FAQ';
+import { Contact } from '../components/homepage/Contact';
 
-export const Home = () => {
+const Home = () => {
   return (
-    <div className="w-full">
-      <Navigation />
+    <main>
       <Hero />
       <Stats />
-      <AboutSnippet />
       <Portfolio />
+      <AboutSnippet />
       <PartnersCarousel />
       <Testimonials />
       <FAQ />
-      <Footer />
-    </div>
+      <Contact />
+    </main>
   );
 };
+
+export default Home;
