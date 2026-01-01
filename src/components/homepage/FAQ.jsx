@@ -1,71 +1,102 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import { useInView } from 'react-intersection-observer';
+import { HelpCircle, Plus, Minus, MessageCircle } from 'lucide-react';
 
 const faqs = [
   {
-    question: "Wech ydir club?",
-    answer: "HEUM."
+    question:  "C'est quoi Project Initiative ?",
+    answer: "Project Initiative est le premier club d'entrepreneuriat et d'innovation de l'USTHB. Nous organisons des formations, workshops, hackathons et événements pour aider les étudiants à développer leurs compétences et concrétiser leurs idées."
   },
   {
-    question: "Les départements li kaynin?",
-    answer: "On est structurés en plusieurs pôles : IT, Design, CC, RE ,RH. Chaque pôle travaille en synergie sur nos projets."
+    question: "Quels sont les départements du club ?",
+    answer: "On est structurés en plusieurs pôles : IT (développement), Design (graphisme/UI-UX), Communication, Relations Externes et Ressources Humaines. Chaque pôle travaille en synergie sur nos projets."
   },
   {
-    question: "Est-ce que lzm etudiant men USTHB bach ykoun membre?",
-    answer: "Principalement oui, car nos activités se déroulent au campus. Cependant, nous restons ouverts aux profils exceptionnels et passionnés venant d'autres écoles pour certaines collaborations."
+    question: "Faut-il être étudiant à l'USTHB pour rejoindre ? ",
+    answer: "Principalement oui, car nos activités se déroulent au campus. Cependant, nous restons ouverts aux profils exceptionnels et passionnés venant d'autres établissements pour certaines collaborations."
   },
   {
-    question: "Kifach n9der nweli membre?",
-    answer: "Le recrutement se fait généralement au début de chaque semestre. Il suffit de remplir le formulaire en ligne, suivi d'un entretien technique ou de motivation selon le département choisi."
+    question: "Comment devenir membre ?",
+    answer: "Le recrutement se fait généralement au début de chaque semestre. Suivez notre compte Instagram @project. initiative. usthb pour être informé des prochaines sessions.  Il suffit de remplir le formulaire en ligne, suivi d'un entretien."
   },
   {
-    question: "Type d’evenements li yndirouhom?",
-    answer: "KOLCH"
+    question: "Quels types d'événements organisez-vous ?",
+    answer: "Nous organisons des hackathons, bootcamps (comme Founders Camp), workshops techniques, conférences, sessions de networking et des compétitions. Chaque événement est une opportunité d'apprendre et de se connecter."
   },
   {
-    question: "Wech ykheli PI spéciale 3la les autres clubs?",
-    answer: "PI ."
+    question: "Qu'est-ce qui rend PI unique ?",
+    answer: "Notre approche pratique et notre communauté passionnée. On ne se contente pas de théorie - on construit, on crée, on innove ensemble. PI c'est une famille de futurs entrepreneurs et innovateurs."
   }
 ];
 
-const FAQItem = ({ faq, isOpen, toggle }) => {
+const FAQItem = ({ faq, index, isOpen, toggle }) => {
   return (
-    <motion.div 
-      className={`border-b border-gray-100 transition-colors duration-500 ${isOpen ? 'bg-gray-50/50' : 'bg-white'}`}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="border-b border-black/5 last:border-none"
     >
-      <button 
+      <motion.button
         onClick={toggle}
-        className="w-full py-8 px-4 flex justify-between items-center text-left group"
+        className="w-full py-6 flex items-start justify-between gap-4 text-left group"
+        whileHover={{ x: 5 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       >
-        <span className={`text-lg md:text-xl font-bold tracking-tight transition-colors duration-300 ${isOpen ? 'text-accent' : 'text-primary'}`}>
+        {/* Question Number */}
+        <span 
+          className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all duration-300 ${
+            isOpen 
+              ? 'bg-[#FF6B00] text-white' 
+              : 'bg-black/5 text-black/40 group-hover:bg-[#FF6B00]/10 group-hover:text-[#FF6B00]'
+          }`}
+          style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        
+        {/* Question Text */}
+        <span 
+          className={`flex-grow text-base md:text-lg font-semibold transition-colors duration-300 ${
+            isOpen ?  'text-[#FF6B00]' : 'text-[#0f172a] group-hover:text-[#FF6B00]'
+          }`}
+          style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+        >
           {faq.question}
         </span>
         
-        {/* Le bouton + interactif */}
-        <div className="relative w-6 h-6 flex items-center justify-center">
-          <motion.div 
-            animate={{ rotate: isOpen ? 45 : 0 }}
-            className={`absolute w-full h-[2px] ${isOpen ? 'bg-accent' : 'bg-primary'}`}
-          />
-          <motion.div 
-            animate={{ rotate: isOpen ? 135 : 90 }}
-            className={`absolute w-full h-[2px] ${isOpen ? 'bg-accent' : 'bg-primary'}`}
-          />
-        </div>
-      </button>
+        {/* Toggle Icon */}
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+          className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300 ${
+            isOpen 
+              ? 'bg-[#FF6B00] text-white' 
+              : 'bg-black/5 text-black/40 group-hover:bg-[#FF6B00]/10 group-hover:text-[#FF6B00]'
+          }`}
+        >
+          {isOpen ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        </motion.div>
+      </motion.button>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <div className="pb-8 px-4 text-gray-500 font-light leading-relaxed max-w-3xl">
-              {faq.answer}
+            <div className="pb-6 pl-12 pr-12">
+              <p 
+                className="text-black/60 leading-relaxed"
+                style={{ fontFamily: '"Inter", sans-serif' }}
+              >
+                {faq.answer}
+              </p>
             </div>
           </motion.div>
         )}
@@ -75,44 +106,85 @@ const FAQItem = ({ faq, isOpen, toggle }) => {
 };
 
 export const FAQ = () => {
-  const [containerRef, isVisible] = useScrollAnimation(0.2);
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(0); // First one open by default
+  const { ref, inView } = useInView({ triggerOnce:  true, threshold: 0.1 });
 
   return (
-    <section ref={containerRef} className="py-32 bg-white">
-      <div className="container mx-auto px-6 lg:px-12">
-        
-        {/* Header Style Studio */}
-        <div className="mb-20">
-          <motion.h2 
-            initial={{ opacity: 0, y: 10 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            className="text-[10px] uppercase tracking-[0.5em] font-black text-gray-300 mb-4"
-          >
-            Questions / Answers
-          </motion.h2>
-          <motion.h3 
-            initial={{ opacity: 0, y: 10 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-black text-primary tracking-tighter"
-          >
-            FREQUENTLY ASKED QUESTIONSSSSSSSSN?
-          </motion.h3>
-        </div>
+    <section 
+      id="faq"
+      ref={ref}
+      className="py-16 md:py-20 bg-white"
+    >
+      <div className="container mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+          
+          {/* Left Column - Header */}
+          <div className="lg:col-span-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              className="lg:sticky lg:top-32"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={inView ? { scale: 1 } : {}}
+                transition={{ delay: 0.2, type: 'spring', stiffness:  200 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF6B00]/10 mb-4"
+              >
+                <HelpCircle className="w-4 h-4 text-[#FF6B00]" />
+                <span 
+                  className="text-xs font-bold uppercase tracking-wider text-[#FF6B00]"
+                  style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+                >
+                  FAQ
+                </span>
+              </motion.div>
+              
+              <h2 
+                className="text-3xl md:text-4xl font-black text-[#0f172a] mb-4"
+                style={{ fontFamily:  '"Space Grotesk", sans-serif' }}
+              >
+                Questions <span className="text-[#FF6B00]">Fréquentes</span>
+              </h2>
+              
+              <p 
+                className="text-black/50 mb-8"
+                style={{ fontFamily:  '"Inter", sans-serif' }}
+              >
+                Tout ce que vous devez savoir sur Project Initiative.  Vous ne trouvez pas votre réponse ?
+              </p>
 
-        {/* Liste des boîtes */}
-        <div className="max-w-4xl border-t border-gray-100">
-          {faqs.map((faq, index) => (
-            <FAQItem 
-              key={index}
-              faq={faq}
-              isOpen={openIndex === index}
-              toggle={() => setOpenIndex(openIndex === index ? null : index)}
-            />
-          ))}
-        </div>
+              {/* Contact CTA */}
+              <motion. a
+                href="https://www.instagram.com/project.initiative.usthb/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-6 py-3 bg-[#0f172a] hover:bg-[#1e293b] text-white font-bold text-sm uppercase tracking-wider rounded-full transition-all"
+                style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <MessageCircle className="w-4 h-4" />
+                Nous Contacter
+              </motion.a>
+            </motion.div>
+          </div>
 
+          {/* Right Column - FAQ Items */}
+          <div className="lg:col-span-8">
+            <div className="bg-[#f8fafc] rounded-3xl p-6 md:p-8">
+              {faqs.map((faq, index) => (
+                <FAQItem
+                  key={index}
+                  faq={faq}
+                  index={index}
+                  isOpen={openIndex === index}
+                  toggle={() => setOpenIndex(openIndex === index ?  null : index)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

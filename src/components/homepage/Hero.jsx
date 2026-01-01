@@ -1,118 +1,280 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '../ui/button';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
+import { ChevronDown, Instagram, Sparkles } from 'lucide-react';
 
-export const Hero = () => {
+// ============ PARTICLE SYSTEM (Lighter) ============
+const Particle = ({ index }) => {
+  const randomX = Math.random() * 100;
+  const randomDelay = Math.random() * 4;
+  const randomDuration = 5 + Math.random() * 3;
+  const randomSize = 2 + Math.random() * 3;
+  const colors = ['#FF6B00', '#1E3A8A', '#FF8C00'];
+  
   return (
-    <section id="hero" className="relative min-h-screen w-full flex items-center justify-center bg-background overflow-hidden">
-      
-      {/* 1. Effet de fond : Gradients animés */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[120px]" />
-      </div>
+    <motion.div
+      className="absolute rounded-full pointer-events-none"
+      style={{
+        left: `${randomX}%`,
+        width: randomSize,
+        height: randomSize,
+        background: colors[index % colors.length],
+      }}
+      initial={{ y: '110%', opacity: 0 }}
+      animate={{ y: '-10%', opacity: [0, 0.6, 0.6, 0] }}
+      transition={{
+        duration: randomDuration,
+        delay: randomDelay,
+        repeat: Infinity,
+        ease: 'linear',
+      }}
+    />
+  );
+};
 
-      <div className="container relative z-10 px-6 text-center">
-        
-        {/* 2. Badge d'annonce avec animation */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
-          <span className="inline-block px-5 py-2 rounded-full border border-primary/20 bg-primary/5 font-heading text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
-            Leading Tech Club @ USTHB
-          </span>
-        </motion.div>
+// ============ INTERACTIVE LOGO ============
+const InteractiveLogo = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const logoRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-        {/* 3. Titre Principal (Syncopate) avec stagger effect */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="flex flex-col items-center justify-center"
-        >
-          <motion.h1 
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-            className="font-display text-5xl md:text-8xl lg:text-9xl uppercase leading-none tracking-tighter"
-          >
-            PROJECT
-          </motion.h1>
-          
-          <motion.div 
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8, ease: "easeOut" }}
-            className="flex items-center gap-4 md:gap-8 mt-2"
-          >
-            <div className="h-[2px] w-12 md:w-32 bg-primary hidden sm:block" />
-            <h1 className="font-display text-5xl md:text-8xl lg:text-9xl uppercase leading-none tracking-tighter text-primary italic">
-              INITIATIVE
-            </h1>
-            <div className="h-[2px] w-12 md:w-32 bg-primary hidden sm:block" />
-          </motion.div>
-        </motion.div>
+  const handleMouseMove = (e) => {
+    if (!logoRef.current) return;
+    const rect = logoRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect. width / 2;
+    const centerY = rect.top + rect.height / 2;
+    mouseX.set((e.clientX - centerX) / 20);
+    mouseY.set((e.clientY - centerY) / 20);
+  };
 
-        {/* 4. Description (Space Grotesk) */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 1 }}
-          className="mt-10 font-heading text-sm md:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed uppercase tracking-wider"
-        >
-          Nous façonnons les ingénieurs de demain à travers l'innovation, 
-          le partage de connaissances et des projets concrets.
-        </motion.p>
+  const springConfig = { stiffness: 150, damping: 15 };
+  const rotateX = useSpring(useTransform(mouseY, [-20, 20], [10, -10]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-20, 20], [-10, 10]), springConfig);
 
-        {/* 5. Boutons d'action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 0.6 }}
-          className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6"
-        >
-          <Button size="lg" className="group px-12">
-            Register Now
-            <motion.span 
-              className="ml-2 inline-block"
-              animate={{ x: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
-              →
-            </motion.span>
-          </Button>
-          <Button variant="outline" size="lg" className="px-12">
-            Our Projects
-          </Button>
-        </motion.div>
-      </div>
+  return (
+    <motion.div
+      ref={logoRef}
+      className="relative cursor-pointer"
+      style={{ perspective: 1000 }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        mouseX.set(0);
+        mouseY.set(0);
+      }}
+    >
+      {/* Glow */}
+      <motion.div
+        className="absolute inset-0 rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(255,107,0,0.35) 0%, rgba(30,58,138,0.2) 50%, transparent 70%)',
+          filter: 'blur(30px)',
+          transform: 'scale(1.2)',
+        }}
+        animate={{ opacity: isHovered ? 1 : 0.5, scale: isHovered ? 1.4 : 1.2 }}
+        transition={{ duration: 0.3 }}
+      />
 
-      {/* 6. Indicateur de scroll minimaliste */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+      {/* Logo */}
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
+        animate={{ scale: isHovered ? 1.05 : 1 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       >
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-[1px] h-20 bg-gradient-to-b from-primary to-transparent" />
-          <span className="font-heading text-[8px] font-black uppercase tracking-[0.5em] text-muted-foreground rotate-90 origin-left translate-x-1">
-            Scroll
-          </span>
+        <motion.img
+          src="/assets/logo-full.png"
+          alt="Project Initiative Club"
+          className="w-[250px] md:w-[320px] lg:w-[380px] h-auto drop-shadow-xl"
+          style={{
+            filter: isHovered 
+              ? 'drop-shadow(0 0 30px rgba(255,107,0,0.4))' 
+              : 'drop-shadow(0 5px 20px rgba(0,0,0,0.1))',
+          }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity:  1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        {/* Sparkles on hover */}
+        {isHovered && (
+          <>
+            <motion.div
+              className="absolute -top-2 -right-2"
+              initial={{ scale: 0 }}
+              animate={{ scale: [0, 1.2, 1] }}
+            >
+              <Sparkles className="w-5 h-5 text-yellow-400" />
+            </motion.div>
+            <motion.div
+              className="absolute -bottom-1 -left-2"
+              initial={{ scale: 0 }}
+              animate={{ scale: [0, 1.2, 1] }}
+              transition={{ delay: 0.1 }}
+            >
+              <Sparkles className="w-4 h-4 text-orange-400" />
+            </motion.div>
+          </>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// ============ MAIN HERO ============
+export const Hero = () => {
+  const [mounted, setMounted] = useState(false);
+  const { scrollY } = useScroll();
+
+  // Gentler parallax - content stays visible longer
+  const opacity = useTransform(scrollY, [0, 600], [1, 0.3]);
+  const y = useTransform(scrollY, [0, 600], [0, 50]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return (
+    <section
+      id="hero"
+      className="relative min-h-[90vh] w-full flex items-center justify-center overflow-hidden pt-20"
+      style={{ background: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)' }}
+    >
+      {/* Background Particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(15)].map((_, i) => (
+          <Particle key={i} index={i} />
+        ))}
+      </div>
+
+      {/* Gradient Orbs */}
+      <div 
+        className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: 'rgba(255,107,0,0.08)', filter: 'blur(80px)' }}
+      />
+      <div 
+        className="absolute bottom-0 right-0 w-[350px] h-[350px] rounded-full pointer-events-none"
+        style={{ background: 'rgba(30,58,138,0.06)', filter: 'blur(80px)' }}
+      />
+
+      {/* Main Content */}
+      <motion.div
+        style={{ opacity, y }}
+        className="container relative z-10 px-6 py-10"
+      >
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+          
+      
+
+          {/* Logo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="mb-6"
+          >
+            <InteractiveLogo />
+          </motion.div>
+
+          {/* Tagline */}
+          <motion. h2
+            initial={{ opacity: 0, y:  20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="text-lg md:text-xl lg:text-2xl font-bold text-primary/70 leading-relaxed mb-6 max-w-2xl"
+            style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+          >
+            Là où l'<span className="text-orange-500">entrepreneuriat</span> et 
+            les <span className="text-blue-700">idées</span> prennent vie à l'université 🚀
+          </motion.h2>
+
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="text-sm md:text-base text-primary/50 max-w-xl mb-8"
+            style={{ fontFamily: '"Inter", sans-serif' }}
+          >
+            Formations, workshops et événements pratiques pour développer vos compétences. 
+            <span className="text-orange-500 font-medium"> Parce qu'en osant, on construit demain. 💡</span>
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion. div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="flex flex-col sm:flex-row items-center gap-3"
+          >
+            <motion. a
+              href="https://www.instagram.com/project.initiative.usthb/"
+              target="_blank"
+              className="px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-sm uppercase tracking-wider rounded-full shadow-lg shadow-orange-500/25"
+              style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px -10px rgba(255,107,0,0.4)' }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Rejoindre PI →
+            </motion.a>
+            <motion.button
+              className="px-8 py-3 border-2 border-blue-900/20 text-blue-900 font-bold text-sm uppercase tracking-wider rounded-full"
+              style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+              whileHover={{ scale: 1.05, borderColor: 'rgba(30,58,138,0.4)' }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Nos Projets
+            </motion.button>
+          </motion.div>
+
+          {/* Mini Stats */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="mt-10 flex gap-8 md:gap-12"
+          >
+            {[
+              { value: '250+', label: 'Membres' },
+              { value: '45+', label: 'Events' },
+              { value: '20+', label: 'Projets' },
+            ].map((stat, i) => (
+              <motion.div
+                key={stat.label}
+                className="text-center"
+                whileHover={{ y: -3 }}
+              >
+                <div 
+                  className="text-2xl md:text-3xl font-black text-orange-500"
+                  style={{ fontFamily:  '"Space Grotesk", sans-serif' }}
+                >
+                  {stat.value}
+                </div>
+                <div className="text-[10px] uppercase tracking-widest text-primary/40 font-semibold">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* 7. Décoration : Logo PI en fond (subtil) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.02] pointer-events-none select-none">
-        <img 
-          src="https://lh3.googleusercontent.com/d/1DQCfO0RmKNbSTb5toyzH4hDwtulNkD-o" 
-          alt="" 
-          className="w-[80vw] max-w-[800px]"
-        />
-      </div>
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2"
+      >
+        <motion.div
+          className="flex flex-col items-center gap-1 cursor-pointer"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          onClick={() => document.getElementById('stats')?.scrollIntoView({ behavior: 'smooth' })}
+        >
+          <ChevronDown className="w-5 h-5 text-orange-500" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
