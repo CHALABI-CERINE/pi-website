@@ -200,32 +200,7 @@ export const Hero = () => {
             <span className="text-orange-500 font-medium"> Parce qu'en osant, on construit demain. 💡</span>
           </motion.p>
 
-          {/* CTA Buttons */}
-          <motion. div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex flex-col sm:flex-row items-center gap-3"
-          >
-            <motion. a
-              href="https://www.instagram.com/project.initiative.usthb/"
-              target="_blank"
-              className="px-8 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold text-sm uppercase tracking-wider rounded-full shadow-lg shadow-orange-500/25"
-              style={{ fontFamily: '"Space Grotesk", sans-serif' }}
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px -10px rgba(255,107,0,0.4)' }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Rejoindre PI →
-            </motion.a>
-            <motion.button
-              className="px-8 py-3 border-2 border-blue-900/20 text-blue-900 font-bold text-sm uppercase tracking-wider rounded-full"
-              style={{ fontFamily: '"Space Grotesk", sans-serif' }}
-              whileHover={{ scale: 1.05, borderColor: 'rgba(30,58,138,0.4)' }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Nos Projets
-            </motion.button>
-          </motion.div>
+        
 
         </div>
       </motion.div>
