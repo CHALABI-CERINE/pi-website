@@ -325,7 +325,7 @@ export const Stats = () => {
             className="text-2xl md:text-3xl lg:text-4xl font-black text-white"
             style={{ fontFamily: '"Space Grotesk", sans-serif' }}
           >
-            Des Chiffres Qui <span className="text-orange-500">Parlent</span>
+          
           </h2>
         </motion.div>
 
@@ -336,38 +336,7 @@ export const Stats = () => {
           ))}
         </div>
 
-        {/* Bottom CTA */}
-        <motion. div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once:  true }}
-          transition={{ delay:  0.8 }}
-          className="mt-12 text-center"
-        >
-          <p 
-            className="text-white/40 text-sm mb-4"
-            style={{ fontFamily:  '"Inter", sans-serif' }}
-          >
-            Prêt à faire partie de l'aventure ? 
-          </p>
-          <motion.a
-            href="https://www.instagram.com/project. initiative. usthb/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm uppercase tracking-wider rounded-full transition-all"
-            style={{ fontFamily: '"Space Grotesk", sans-serif' }}
-            whileHover={{ scale: 1.05, boxShadow: '0 20px 40px -10px rgba(255,107,0,0.4)' }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Rejoindre PI
-            <motion.span
-              animate={{ x: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            >
-              →
-            </motion.span>
-          </motion.a>
-        </motion.div>
+     
       </div>
     </section>
   );

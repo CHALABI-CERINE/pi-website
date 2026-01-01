@@ -336,52 +336,7 @@ export const Footer = () => {
           </motion.div>
         </div>
 
-        {/* Social Links Bar - Mobile Friendly */}
-        <motion.div 
-          variants={itemVariants}
-          className="flex flex-wrap justify-center gap-4 py-8 border-t border-b border-white/5 mb-8"
-        >
-          <a 
-            href="https://www.instagram.com/project.initiative. usthb/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all text-sm"
-            style={{ fontFamily: '"Inter", sans-serif' }}
-          >
-            <Instagram className="w-4 h-4" />
-            Instagram
-          </a>
-          <a 
-            href="https://www.facebook.com/projectinitiativeclub/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all text-sm"
-            style={{ fontFamily: '"Inter", sans-serif' }}
-          >
-            <Facebook className="w-4 h-4" />
-            Facebook
-          </a>
-          <a 
-            href="https://www.linkedin.com/company/project-initiative-club/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all text-sm"
-            style={{ fontFamily: '"Inter", sans-serif' }}
-          >
-            <Linkedin className="w-4 h-4" />
-            LinkedIn
-          </a>
-          <a 
-            href="https://www.tiktok.com/@projectinitiative. usthb"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all text-sm"
-            style={{ fontFamily: '"Inter", sans-serif' }}
-          >
-            <TikTokIcon className="w-4 h-4" />
-            TikTok
-          </a>
-        </motion.div>
+      
 
         {/* Bottom Bar */}
         <motion.div 
@@ -413,11 +368,8 @@ export const Footer = () => {
               par l'équipe PI @ USTHB
             </motion.p>
 
-            {/* Nonprofit badge */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 text-xs text-white/40">
-              <span className="w-2 h-2 rounded-full bg-green-500"></span>
-              Association à but non lucratif
-            </div>
+          
+           
           </div>
         </motion.div>
       </motion.div>
