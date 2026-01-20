@@ -13,12 +13,6 @@ A modern React website built with Tailwind CSS, using Google Sheets as backend.
 
 See [STRUCTURE.md](./STRUCTURE.md) for detailed folder organization.
 
-### Task Distribution
-- **Homepage**: YOU
-- **About Page**: Team Member 1
-- **Events/Projects**: Team Member 2
-- **Alumni/Testimonials**: Team Member 3
-- **Contact/Q&A**: Team Member 4
 
 ## ⚙️ Setup
 
