@@ -55,15 +55,7 @@ npm run dev
 
 4. **Create Pull Request** on GitHub
 
-## 📝 Google Sheets Structure
 
-Your spreadsheet should have these sheets:
-- **Events**:  id, name, date, description, location, image_url, is_open
-- **Projects**: id, name, description, impact, image_url, status
-- **Alumni**: id, name, role, company, story, image_url
-- **Testimonials**: id, name, role, quote, event/project_id, image_url
-- **FAQ**: question, answer, category
-- **Partners**: name, logo_url, website, description
 
 ## 🎨 Color Palette
 - Primary (Orange): #FF8C00
@@ -81,6 +73,3 @@ Your spreadsheet should have these sheets:
 VITE_GOOGLE_SHEETS_API_KEY=your_api_key
 VITE_GOOGLE_SHEETS_ID=your_spreadsheet_id
 ```
-
-## 📞 Support
-If you have questions, ask in the team chat or create an issue. 
