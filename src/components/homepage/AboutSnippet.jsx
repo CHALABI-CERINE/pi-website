@@ -1,200 +1,181 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Lightbulb, Target, Users, Zap, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
-const factBoxes = [
-  {
-    icon: Lightbulb,
-    title: 'Ce Qu\'on Fait',
-    description: 'Formations, hackathons, workshops et événements pour développer vos compétences entrepreneuriales.',
-    color: 'from-orange-500 to-orange-600',
-    iconBg: 'bg-orange-500/10',
-    iconColor: 'text-orange-500',
-  },
-  {
-    icon: Target,
-    title:  'Nos Valeurs',
-    description: 'Innovation, collaboration, excellence et impact positif sur notre communauté universitaire.',
-    color: 'from-blue-600 to-blue-700',
-    iconBg: 'bg-blue-600/10',
-    iconColor:  'text-blue-600',
-  },
-  {
-    icon: Users,
-    title:  'Notre Équipe',
-    description: 'Des étudiants passionnés qui croient au pouvoir des idées et de l\'entrepreneuriat.',
-    color: 'from-orange-500 to-orange-600',
-    iconBg: 'bg-orange-500/10',
-    iconColor: 'text-orange-500',
-  },
-  {
-    icon:  Zap,
-    title:  'Notre Impact',
-    description: '+250 membres formés, +45 événements organisés et des projets qui changent les choses.',
-    color: 'from-blue-600 to-blue-700',
-    iconBg: 'bg-blue-600/10',
-    iconColor: 'text-blue-600',
-  },
+// ─── DATA ─────────────────────────────────────────────
+const pillars = [
+  { number: '01', title: 'Former', desc: 'Workshops, hackathons et formations pratiques pour développer vos compétences.' },
+  { number: '02', title: 'Innover', desc: 'Transformer les idées en projets concrets à travers l\'entrepreneuriat.' },
+  { number: '03', title: 'Connecter', desc: 'Créer un réseau d\'étudiants, de mentors et de partenaires à l\'USTHB.' },
 ];
 
-const FactBox = ({ box, index }) => {
-  const Icon = box.icon;
-  
-  return (
-    <motion. div
-      initial={{ opacity: 0, y:  30 }}
-      whileInView={{ opacity: 1, y:  0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className="group relative p-6 rounded-2xl bg-white border border-primary/5 shadow-sm hover:shadow-xl hover:shadow-orange-500/5 transition-all duration-300"
+// ─── PILLAR ROW ───────────────────────────────────────
+const PillarRow = ({ pillar, index }) => (
+  <motion.div
+    initial={{ opacity: 0, x: -20 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: index * 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+    className="group flex items-start gap-6 py-6 border-b border-primary/5 last:border-b-0 cursor-default"
+  >
+    {/* Number */}
+    <span 
+      className="text-xs font-bold tracking-widest text-accent/40 group-hover:text-accent transition-colors duration-300 pt-1 select-none"
+      style={{ fontFamily: '"Space Grotesk", sans-serif' }}
     >
-      {/* Gradient border on hover */}
-      <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${box.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl`} />
-      
-      {/* Icon */}
-      <motion.div 
-        className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${box.iconBg} ${box.iconColor} mb-4`}
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 10 }}
-      >
-        <Icon className="w-6 h-6" />
-      </motion.div>
-      
-      {/* Title */}
+      {pillar.number}
+    </span>
+
+    {/* Content */}
+    <div className="flex-1">
       <h4 
-        className="text-lg font-bold text-primary mb-2"
-        style={{ fontFamily:  '"Space Grotesk", sans-serif' }}
+        className="text-lg font-bold text-primary group-hover:text-accent transition-colors duration-300 mb-1"
+        style={{ fontFamily: '"Space Grotesk", sans-serif' }}
       >
-        {box.title}
+        {pillar.title}
       </h4>
-      
-      {/* Description */}
       <p 
-        className="text-sm text-primary/60 leading-relaxed"
+        className="text-sm text-primary/50 leading-relaxed max-w-md"
         style={{ fontFamily: '"Inter", sans-serif' }}
       >
-        {box.description}
+        {pillar.desc}
       </p>
+    </div>
 
-      {/* Decorative corner */}
-      <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl ${box.color} opacity-5 rounded-tr-2xl rounded-bl-[40px]`} />
+    {/* Arrow hint on hover */}
+    <motion.div
+      className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pt-1"
+      initial={false}
+    >
+      <ArrowRight className="w-4 h-4 text-accent" />
     </motion.div>
-  );
-};
+  </motion.div>
+);
 
+// ─── MAIN COMPONENT ───────────────────────────────────
 export const AboutSnippet = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="about" className="relative py-16 md:py-20 bg-gradient-to-b from-white via-surface to-white overflow-hidden">
-      {/* Background decorations */}
+    <section id="about" className="relative py-24 md:py-32 bg-white overflow-hidden">
+      
+      {/* Subtle background texture — single diagonal line */}
       <div 
-        className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none"
-        style={{ background: 'rgba(255,107,0,0.03)', filter: 'blur(80px)' }}
-      />
-      <div 
-        className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full pointer-events-none"
-        style={{ background: 'rgba(30,58,138,0.03)', filter: 'blur(60px)' }}
+        className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-primary/5 to-transparent"
+        style={{ right: '33%' }}
       />
 
       <div className="container relative z-10 mx-auto px-6">
         
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y:  0 }}
-            viewport={{ once: true }}
-            className="max-w-2xl"
-          >
-            {/* Badge */}
-            <motion.span 
-              className="inline-block px-4 py-1.5 rounded-full bg-blue-600/10 text-blue-600 text-xs font-bold uppercase tracking-wider mb-4"
-              style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+        {/* ─── TWO-COLUMN LAYOUT ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-start">
+          
+          {/* ─── LEFT: Headline + Statement ─── */}
+          <div className="lg:sticky lg:top-32">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              À Propos
-            </motion. span>
-            
-            {/* Title */}
-            <h2 
-              className="text-3xl md:text-4xl lg:text-5xl font-black text-primary leading-tight mb-4"
-              style={{ fontFamily:  '"Space Grotesk", sans-serif' }}
-            >
-              Qui Sommes-
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">Nous</span> ? 
-            </h2>
-            
-            {/* Mission Statement */}
-            <p 
-              className="text-base md:text-lg text-primary/60 leading-relaxed"
-              style={{ fontFamily: '"Inter", sans-serif' }}
-            >
-              Le <strong className="text-primary">Project Initiative Club</strong> est le premier club d'entrepreneuriat et d'innovation de l'USTHB. 
-              Depuis notre création, nous aidons les étudiants à transformer leurs idées en projets concrets à travers des formations pratiques, 
-              des workshops intensifs et des événements inspirants.  Notre mission :  
-              <span className="text-orange-500 font-semibold"> créer la prochaine génération d'entrepreneurs algériens</span> qui osent innover et bâtir l'avenir.
-            </p>
-          </motion.div>
+              {/* Badge */}
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-8 h-px bg-accent" />
+                <span 
+                  className="text-[11px] font-bold uppercase tracking-[0.25em] text-accent"
+                  style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+                >
+                  À Propos
+                </span>
+              </div>
 
-          {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x:  0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            <motion.button
-              onClick={() => navigate('/about')}
-              className="group flex items-center gap-3 px-6 py-3 bg-primary hover:bg-primary/90 text-white font-bold text-sm uppercase tracking-wider rounded-full shadow-lg shadow-primary/20"
-              style={{ fontFamily: '"Space Grotesk", sans-serif' }}
-              whileHover={{ scale: 1.05, boxShadow: '0 20px 40px -10px rgba(15,23,42,0.3)' }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Découvrir Notre Histoire
-              <motion.span
-                animate={{ x: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
+              {/* Title */}
+              <h2 
+                className="text-4xl md:text-5xl lg:text-[3.5rem] font-black text-primary leading-[1.1] mb-8"
+                style={{ fontFamily: '"Space Grotesk", sans-serif' }}
               >
-                <ArrowRight className="w-4 h-4" />
-              </motion.span>
-            </motion.button>
-          </motion.div>
-        </div>
+                Le club qui
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#FF8C00]">
+                  transforme
+                </span>
+                <br />
+                les idées.
+              </h2>
 
-        {/* Fact Boxes Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {factBoxes.map((box, index) => (
-            <FactBox key={box.title} box={box} index={index} />
-          ))}
-        </div>
+              {/* Mission text */}
+              <p 
+                className="text-base text-primary/50 leading-[1.8] max-w-lg mb-10"
+                style={{ fontFamily: '"Inter", sans-serif' }}
+              >
+                <strong className="text-primary/80">Project Initiative</strong> est le premier club 
+                d'entrepreneuriat de l'USTHB. Nous créons un espace où les étudiants 
+                passent de l'idée à l'action — à travers des expériences concrètes 
+                qui préparent la prochaine génération d'innovateurs algériens.
+              </p>
 
-        {/* Bottom Quote */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y:  0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mt-12 text-center"
-        >
-          <blockquote 
-            className="text-lg md:text-xl text-primary/70 italic max-w-2xl mx-auto"
-            style={{ fontFamily:  '"Space Grotesk", sans-serif' }}
-          >
-            "Chaque expérience est une chance de créer et bâtir l'avenir ensemble."
-          </blockquote>
-          <div className="mt-3 flex items-center justify-center gap-2">
-            <div className="w-8 h-0.5 bg-orange-500 rounded-full" />
-            <span 
-              className="text-xs font-bold uppercase tracking-wider text-orange-500"
-              style={{ fontFamily: '"Space Grotesk", sans-serif' }}
-            >
-              Project Initiative
-            </span>
-            <div className="w-8 h-0.5 bg-orange-500 rounded-full" />
+              {/* CTA */}
+              <motion.button
+                onClick={() => navigate('/about')}
+                className="group inline-flex items-center gap-4"
+                whileHover={{ x: 5 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+              >
+                <span 
+                  className="text-xs font-bold uppercase tracking-[0.2em] text-primary group-hover:text-accent transition-colors"
+                  style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+                >
+                  Découvrir notre histoire
+                </span>
+                <div className="w-10 h-10 rounded-full border border-primary/10 group-hover:border-accent group-hover:bg-accent flex items-center justify-center transition-all duration-300">
+                  <ArrowRight className="w-4 h-4 text-primary/40 group-hover:text-white transition-colors duration-300" />
+                </div>
+              </motion.button>
+            </motion.div>
           </div>
-        </motion.div>
+
+          {/* ─── RIGHT: Pillars + Accent ─── */}
+          <div>
+            {/* Accent block */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="relative mb-10 p-8 rounded-2xl overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}
+            >
+              {/* Decorative corner */}
+              <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10 rounded-bl-[60px]" />
+              
+              <blockquote 
+                className="relative z-10 text-lg md:text-xl text-white/90 font-medium leading-relaxed"
+                style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+              >
+                "Chaque expérience est une chance de créer et bâtir l'avenir ensemble."
+              </blockquote>
+              <div className="flex items-center gap-3 mt-5">
+                <div className="w-6 h-px bg-accent" />
+                <span 
+                  className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent"
+                  style={{ fontFamily: '"Space Grotesk", sans-serif' }}
+                >
+                  Project Initiative
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Pillar list */}
+            <div>
+              {pillars.map((pillar, index) => (
+                <PillarRow key={pillar.number} pillar={pillar} index={index} />
+              ))}
+            </div>
+
+         
+          </div>
+        </div>
       </div>
     </section>
   );
