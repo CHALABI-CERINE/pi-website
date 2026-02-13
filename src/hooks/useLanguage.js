@@ -28,10 +28,13 @@ export const useLanguage = () => {
       footerTerms: 'Terms of Service',
       
       // Hero Section
+            // Hero Section
       heroTitle: 'Empowering Tomorrow\'s Leaders',
       heroSubtitle: 'Join our thriving community and make a real impact on the world.',
       heroCTA: 'Get Started',
       heroLearnMore: 'Learn More',
+      heroMission: 'We aim to introduce Algerian students to the world of business and initiatives.',
+      heroMissionSecondary: 'We empower students through events, workshops, and real-world entrepreneurial experiences.',
       
       // Stats
       statMembersLabel: 'Active Members',
@@ -86,10 +89,13 @@ export const useLanguage = () => {
       footerTerms:  'Conditions d\'Utilisation',
       
       // Hero Section
+           // Hero Section
       heroTitle: 'Autonomiser les Leaders de Demain',
       heroSubtitle: 'Rejoignez notre communauté dynamique et créez un impact réel dans le monde.',
       heroCTA: 'Commencer',
       heroLearnMore: 'En Savoir Plus',
+      heroMission: 'Nous visons à initier les étudiants algériens au monde des affaires et de l’entrepreneuriat.',
+      heroMissionSecondary: 'Nous accompagnons les étudiants avec des événements, ateliers et expériences entrepreneuriales concrètes.',
       
       // Stats
       statMembersLabel: 'Membres Actifs',
