@@ -13,3 +13,33 @@ html {
 body {
   @apply bg-canvas text-primary font-body;
 }
+
+
+/* Cursor blob is created by the CursorBlob component; these utilities help polish */
+.cursor-blob-hidden { opacity: 0; }
+.cursor-blob-visible { opacity: 1; transition: opacity 220ms ease; }
+
+/* A simple liquid morph button example */
+.btn-liquid {
+  position: relative;
+  overflow: hidden;
+  --bg: linear-gradient(90deg,#FF6B00,#FF8C00);
+  background: var(--bg);
+  color: white;
+  border-radius: 12px;
+  padding: 0.6rem 1.2rem;
+  transition: transform .18s ease;
+}
+.btn-liquid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,0.12), transparent 30%);
+  transition: opacity .18s;
+  opacity: 0;
+}
+.btn-liquid:hover { transform: translateY(-4px) scale(1.02); }
+.btn-liquid:hover::after { opacity: 1; }
+
+/* Card tilt helper */
+.will-change-transform { will-change: transform; backface-visibility: hidden; }
