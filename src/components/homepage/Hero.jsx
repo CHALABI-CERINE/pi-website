@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-const HERO_BG = '/assets/hero-bg.jpg';
 const HERO_LOGO = '/assets/logo.png';
 
 export const Hero = () => {
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   return (
     <section
       id="hero"
-      className="relative h-screen w-full flex items-center justify-center overflow-hidden"
+      className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-[#0f172a]"
     >
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        <img src={HERO_BG} alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[#0f172a]/65" />
+        <picture>
+          {/* Try WebP first (smaller), fallback to jpg */}
+          <source srcSet="/assets/hero-bg.webp" type="image/webp" />
+          <img
+            src="/assets/hero-bg.webp"
+            alt=""
+            className={`w-full h-full object-cover transition-opacity duration-700 ${
+              imgLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImgLoaded(true)}
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+        </picture>
+        <div className="absolute inset-0 bg-[#0f172a]/60" />
       </div>
 
       {/* Content */}
@@ -46,7 +59,7 @@ export const Hero = () => {
             className="text-base md:text-lg text-white/50 max-w-xl leading-[1.8] mb-12"
             style={{ fontFamily: '"Inter", sans-serif' }}
           >
-            Project Initiative est le club d'entrepreneuriat de l'USTHB. 
+            Project Initiative est le club d'entrepreneuriat de l'USTHB.
             On forme, on accompagne, on connecte — et on construit des choses concrètes.
           </motion.p>
 
