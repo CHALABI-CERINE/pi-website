@@ -178,7 +178,7 @@ export const Hero = () => {
 
       {/* Background Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-[1]">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(5)].map((_, i) => (
           <Particle key={i} index={i} />
         ))}
       </div>

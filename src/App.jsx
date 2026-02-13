@@ -36,7 +36,7 @@ function App() {
             {/* PAGE 1: Longue page scrollable avec 9 sections */}
             <Route path="/" element={<Home />} />
 
-    ?
+    
           </Routes>
         </main>
 

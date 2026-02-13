@@ -111,7 +111,8 @@ export const Footer = () => {
     },
     {
       href: "https://www.tiktok.com/@projectinitiative.usthb",
-      icon: <TikTokIcon className="w-5 h-5" />,
+      // icon: <TikTokIcon className="w-5 h-5" />,
+        icon: TikTokIcon,
       label: "TikTok",
       gradient: "bg-black",
       isCustomIcon: true
@@ -227,7 +228,7 @@ export const Footer = () => {
               {socialLinks.map((social) => (
                 <SocialLink 
                   key={social.label}
-                  href={social. href}
+                  href={social.href}
                   icon={social.icon}
                   label={social.label}
                   gradient={social.gradient}
