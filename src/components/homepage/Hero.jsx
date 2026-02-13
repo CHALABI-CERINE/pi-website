@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const HERO_LOGO = '/assets/logo.png';
 
 const HERO_IMAGES = [
   '/assets/hero/hero-1.jpg',
   '/assets/hero/hero-2.jpg',
   '/assets/hero/hero-3.jpg',
+  '/assets/hero/hero-4.jpg',
+  '/assets/hero/hero-5.jpg',
 ];
 
 export const Hero = () => {
@@ -16,15 +17,14 @@ export const Hero = () => {
     if (HERO_IMAGES.length <= 1) return;
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 4000);
+    }, 2000);
     return () => clearInterval(timer);
   }, []);
 
   return (
     <section
       id="hero"
-      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: '#0f172a' }}
+      className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-primary"
     >
       {/* Background Slideshow */}
       <div className="absolute inset-0 z-0">
@@ -41,32 +41,20 @@ export const Hero = () => {
             }}
           />
         ))}
-        <div
-          className="absolute inset-0"
-          style={{ backgroundColor: 'rgba(15, 23, 42, 0.6)' }}
-        />
+        <div className="absolute inset-0 bg-primary/60" />
       </div>
 
       {/* Content */}
       <div className="container relative z-10 px-6 pt-20">
         <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
 
-          <motion.img
-            src={HERO_LOGO}
-            alt="Project Initiative"
-            className="w-[140px] md:w-[180px] h-auto mb-12"
-            style={{ opacity: 0.9 }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.9 }}
-            transition={{ duration: 0.8 }}
-          />
+        
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.7 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-8"
-            style={{ fontFamily: '"Space Grotesk", sans-serif', lineHeight: 1.15 }}
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-8 font-heading"
           >
             On n'attend pas d'avoir un diplôme pour entreprendre.
           </motion.h1>
@@ -75,8 +63,8 @@ export const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.7 }}
-            className="text-base md:text-lg max-w-xl mb-12"
-            style={{ fontFamily: '"Inter", sans-serif', color: 'rgba(255,255,255,0.5)', lineHeight: 1.8 }}
+            className="text-base md:text-lg text-white/50 max-w-xl mb-12 font-body"
+            style={{ lineHeight: 1.8 }}
           >
             Project Initiative est le club d'entrepreneuriat de l'USTHB.
             On forme, on accompagne, on connecte — et on construit des choses concrètes.
@@ -86,17 +74,12 @@ export const Hero = () => {
             href="/#about"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 1 }}
             onClick={(e) => {
               e.preventDefault();
               document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="px-8 py-3.5 text-sm font-bold rounded-full"
-            style={{
-              fontFamily: '"Space Grotesk", sans-serif',
-              backgroundColor: '#ffffff',
-              color: '#0f172a',
-            }}
+            className="px-8 py-3.5 bg-white text-primary text-sm font-bold rounded-full hover:bg-white/90 transition-colors font-heading"
           >
             Découvrir PI
           </motion.a>
@@ -105,20 +88,15 @@ export const Hero = () => {
 
       {/* Slide indicators */}
       {HERO_IMAGES.length > 1 && (
-        <div className="absolute bottom-8 left-1/2 z-10 flex gap-2" style={{ transform: 'translateX(-50%)' }}>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2">
           {HERO_IMAGES.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}
+              className="h-1 rounded-full transition-all duration-500"
               style={{
-                height: 4,
                 width: i === current ? 32 : 8,
-                borderRadius: 9999,
                 backgroundColor: i === current ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.15)',
-                transition: 'all 0.5s',
-                border: 'none',
-                padding: 0,
-                cursor: 'pointer',
               }}
               aria-label={`Image ${i + 1}`}
             />
