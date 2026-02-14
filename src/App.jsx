@@ -1,15 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-
-// Shared Components
 import { Navigation } from './components/shared/Navigation';
 import { Footer } from './components/shared/Footer';
-
-// Pages
 import Home from './pages/Home';
 
-// Helper pour scroller en haut lors d'un changement de page
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => {
