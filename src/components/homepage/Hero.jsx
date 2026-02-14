@@ -7,10 +7,7 @@ const HERO_LOGO = '/assets/logo.png';
 const HERO_IMAGES = [
   '/assets/hero/hero-1.jpg',
   '/assets/hero/hero-2.jpg',
-  '/assets/hero/hero-3.jpg',
   '/assets/hero/hero-4.jpg',
-  '/assets/hero/hero-5.jpg',
-  '/assets/hero/hero-6.jpg',
 ];
 
 // ─── The rotating words — what PI actually does ───
